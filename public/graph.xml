@@ -1,0 +1,94 @@
+<network>
+	<nodes>
+		<node name="A">
+			<x>1</x>
+			<y>7</y>
+		</node>
+		<node name="B">
+			<x>4</x>
+			<y>9</y>
+		</node>
+		<node name="C">
+			<x>3</x>
+			<y>5</y>
+		</node>
+		<node name="D">
+			<x>2</x>
+			<y>1</y>
+		</node>
+		<node name="E">
+			<x>6</x>
+			<y>6</y>
+		</node>
+		<node name="F">
+			<x>10</x>
+			<y>9</y>
+		</node>
+		<node name="G">
+			<x>7</x>
+			<y>2</y>
+		</node>
+		<node name="H">
+			<x>11</x>
+			<y>5</y>
+		</node>
+		<node name="I">
+			<x>11</x>
+			<y>3</y>
+		</node>
+		<node name="J">
+			<x>14</x>
+			<y>1</y>
+		</node>
+	</nodes>
+	<links>
+		<link start="A" end="B">
+			<weight>3</weight>
+		</link>
+		<link start="A" end="C">
+			<weight>2</weight>
+		</link>
+		<link start="B" end="F">
+			<weight>6</weight>
+		</link>
+		<link start="B" end="E">
+			<weight>2</weight>
+		</link>
+		<link start="C" end="D">
+			<weight>2</weight>
+		</link>
+		<link start="C" end="E">
+			<weight>3</weight>
+		</link>
+		<link start="C" end="G">
+			<weight>4</weight>
+		</link>
+		<link start="D" end="E">
+			<weight>5</weight>
+		</link>
+		<link start="E" end="F">
+			<weight>4</weight>
+		</link>
+		<link start="E" end="G">
+			<weight>4</weight>
+		</link>
+		<link start="F" end="H">
+			<weight>4</weight>
+		</link>
+		<link start="F" end="J">
+			<weight>9</weight>
+		</link>
+		<link start="G" end="H">
+			<weight>5</weight>
+		</link>
+		<link start="G" end="I">
+			<weight>3</weight>
+		</link>
+		<link start="H" end="I">
+			<weight>1</weight>
+		</link>
+		<link start="I" end="J">
+			<weight>3</weight>
+		</link>
+	</links>
+</network>

@@ -8,7 +8,7 @@ const Display = () => {
   return (
     <div className="bg-[#e4e4e4] relative">
       <GraphContainer />
-      <div className="bg-gray flex flex-col items-center justify-center ml-[450px] h-[100vh] fixed">
+      <div className="bg-gray flex flex-col items-center justify-center ml-[290px] h-[100vh] fixed">
         <img className="w-[400px] mb-5 mt-[680px]" src={Logo} alt="Logo" />
         <p className="text-[20px] pb-6 tracking-widest">ROUTE CALCULATOR</p>
       </div>

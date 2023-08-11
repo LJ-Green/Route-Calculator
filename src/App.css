@@ -9,5 +9,5 @@
 .dragging-link {
   stroke: green;
   stroke-width: 8;
-  filter: drop-shadow(0 0 10px lime); /* Adjust the shadow properties as needed */
+  filter: drop-shadow(0 0 10px lime);
 }

@@ -1,7 +1,7 @@
 const Checkpoints = ({ shortestPathArray = [] }) => {
   return (
     
-    <div className="bg-[#B8B8B8] ml-[74px] w-[150px] h-[240px] rounded-2xl p-4">
+    <div className="bg-[#B8B8B8] ml-[-75px] mt-[100px] w-[150px] h-[240px] rounded-2xl p-4">
       <p className="text-white text-center text-[12px] mb-3 tracking-widest">
         CHECKPOINTS
       </p>

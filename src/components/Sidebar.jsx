@@ -2,8 +2,15 @@ import React from "react";
 import Logo from "../assets/INNAXYS.svg";
 import Driver from "./DriverLogin";
 import Passenger from "./PassengerLogin";
+import Checkpoints from "./Checkpoints";
 
-const Sidebar = ({ shortestPathDistance, startNodeName, chosenNodeName, shortestPathArray }) => {
+const Sidebar = ({
+  shortestPathDistance,
+  startNodeName,
+  chosenNodeName,
+  calculationTime,
+  shortestPathArray
+}) => {
   return (
     <div className="sidebar w-[300px] bg-[#E0E0E0] fixed top-0 right-0 h-full z-[1000]">
       {/* User Login */}
@@ -14,7 +21,7 @@ const Sidebar = ({ shortestPathDistance, startNodeName, chosenNodeName, shortest
           <Passenger />
         </div>
       </div>
-      {/* Journey Info */}
+      {/* Journey Info & Reset button */}
       <div className="flex flex-col items-center px-[20px] border-b border-black pb-3">
         <h3 className="text-center text-[26px] tracking-widest my-3">
           JOURNEY INFO
@@ -37,12 +44,7 @@ const Sidebar = ({ shortestPathDistance, startNodeName, chosenNodeName, shortest
           </div>
           <p className="ml-7">{chosenNodeName}</p>
         </div>
-        <button
-          className="bg-[#FF0000] text-[12px] tracking-widest w-[100px] p-2 rounded-full border-2 shadow-l my-3"
-          style={{ boxShadow: "inset 0px 0px 10px rgba(0, 0, 0, 0.3)" }}
-        >
-          RESET
-        </button>
+        <p className="mt-3">DRAG TO RESET</p>
       </div>
       {/* Journey Weight */}
       <h3 className="text-center text-[26px] my-3 tracking-widest">WEIGHT</h3>

@@ -9,6 +9,7 @@ const App = () => {
   const [startNodeName, setStartNodeName] = useState(null);
   const [chosenNodeName, setChosenNodeName] = useState(null);
   const [shortestPathArray, setShortestPathArray] = useState([]);
+  const [calculationTime, setCalculationTime] = useState(null); // Change this to null instead of an array
 
   useEffect(() => {
     // Fetch the XML data here
@@ -26,7 +27,8 @@ const App = () => {
         setShortestPathDistance={setShortestPathDistance}
         setStartNodeName={setStartNodeName}
         setChosenNodeName={setChosenNodeName}
-        setShortestPathArray={setShortestPathArray} // Add this prop to pass the shortestPathArray
+        setShortestPathArray={setShortestPathArray}
+        setCalculationTime={setCalculationTime} // Pass the setter for calculationTime
       />
       <Display />
       {/* Pass the shortestPathDistance, startNodeName, and chosenNodeName to the Sidebar component */}
@@ -34,7 +36,8 @@ const App = () => {
         shortestPathDistance={shortestPathDistance}
         startNodeName={startNodeName}
         chosenNodeName={chosenNodeName}
-        shortestPathArray={shortestPathArray} // Pass the shortestPathArray to the Checkpoints component
+        shortestPathArray={shortestPathArray}
+        calculationTime={calculationTime}
       />
     </div>
   );

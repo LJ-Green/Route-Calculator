@@ -7,7 +7,7 @@ const GraphContainer = ({ children }) => {
         display: 'flex',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        paddingLeft: '50px',
+        paddingLeft: '150px',
         paddingTop: '80px',
       }}
     >

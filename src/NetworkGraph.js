@@ -68,6 +68,7 @@ const NetworkGraph = ({
   const graphHeight = 500;
   const svgRef = useRef(null);
   const [shortestPathArray, setShortestPathArray] = useState([]);
+  const [calculationTime, setCalculationTime] = useState(null);
 
   let scaledX,
     scaledY,
@@ -168,6 +169,9 @@ const NetworkGraph = ({
       if (chosenNode) {
         console.log("Chosen Node:", chosenNode);
 
+        // Start measuring calculation time
+      const startTime = performance.now();
+
         // Calculate the shortest path distance using Dijkstra's algorithm
         const graph = {};
         graphData.links.forEach((link) => {
@@ -182,6 +186,13 @@ const NetworkGraph = ({
         });
 
         const shortestPath = dijkstra(graph, draggedNode.name, chosenNode.name);
+
+         // End measuring calculation time
+      const endTime = performance.now();
+      const timeTaken = endTime - startTime;
+
+      // Store the calculation time in state
+      setCalculationTime(timeTaken);
 
         // Used to pass props into external components
         setShortestPathDistance(shortestPath.distance);
@@ -243,6 +254,11 @@ const NetworkGraph = ({
       // Reverts Start node to original position
       draggedNode.potentialTarget = null;
     });
+
+    // Listen for changes in calculationTime and log the value
+  useEffect(() => {
+    console.log("Calculation Time:", calculationTime);
+  }, [calculationTime]);
 
   // Display Rendering
   useEffect(() => {
@@ -358,7 +374,13 @@ const NetworkGraph = ({
         className="w-[880px] h-[550px] bg-[#B8B8B8] rounded-2xl bg-opacity-80"
         ref={svgRef}
       />
+      <div>
       <Checkpoints shortestPathArray={shortestPathArray} />
+      <div className="ml-[-75px] mt-3 rounded-full border-2 bg-[#B8B8B8] text-center text-[12px] px-4">Calc Time: {" "}
+        {calculationTime === null
+          ? "0.00ms"
+          : `${calculationTime.toFixed(3)} ms`}</div>
+          </div>
     </GraphContainer>
   );
 };

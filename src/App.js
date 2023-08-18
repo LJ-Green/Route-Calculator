@@ -9,7 +9,7 @@ const App = () => {
   const [startNodeName, setStartNodeName] = useState(null);
   const [chosenNodeName, setChosenNodeName] = useState(null);
   const [shortestPathArray, setShortestPathArray] = useState([]);
-  const [calculationTime, setCalculationTime] = useState(null); // Change this to null instead of an array
+  const [calculationTime, setCalculationTime] = useState(null);
 
   useEffect(() => {
     // Fetch the XML data here
@@ -37,7 +37,7 @@ const App = () => {
         startNodeName={startNodeName}
         chosenNodeName={chosenNodeName}
         shortestPathArray={shortestPathArray}
-        calculationTime={calculationTime}
+        calculationTime={calculationTime} // Pass the calculationTime state
       />
     </div>
   );

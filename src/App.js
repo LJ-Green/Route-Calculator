@@ -12,7 +12,7 @@ const App = () => {
   const [calculationTime, setCalculationTime] = useState(null);
 
   useEffect(() => {
-    // Fetch the XML data here
+    // Fetching the XML file
     fetch("graph.xml")
       .then((response) => response.text())
       .then((data) => setXmlData(data))
@@ -28,7 +28,7 @@ const App = () => {
         setStartNodeName={setStartNodeName}
         setChosenNodeName={setChosenNodeName}
         setShortestPathArray={setShortestPathArray}
-        setCalculationTime={setCalculationTime} // Pass the setter for calculationTime
+        setCalculationTime={setCalculationTime}
       />
       <Display />
       {/* Pass the shortestPathDistance, startNodeName, and chosenNodeName to the Sidebar component */}
@@ -37,7 +37,7 @@ const App = () => {
         startNodeName={startNodeName}
         chosenNodeName={chosenNodeName}
         shortestPathArray={shortestPathArray}
-        calculationTime={calculationTime} // Pass the calculationTime state
+        calculationTime={calculationTime}
       />
     </div>
   );

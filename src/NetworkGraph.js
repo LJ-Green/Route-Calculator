@@ -1,10 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
-import { parseXML } from "./utils/graphUtils";
+import { parseXML } from "./utils/graphUtils"; // Parsed XML into JSON
 import { drag } from "d3-drag";
 import GraphContainer from "./components/GraphContainer";
 import Checkpoints from "./components/Checkpoints";
 import "./App.css";
+
+// Implementing Dijktras Algorithm to find the shortest path between two nodes
+// Vairiables/ Initial styling for nodes & links
+// Drag handling (Start, On, End)
+// Displaying the graph using X & Y
+// Graph rendering
 
 // Dijkstra's algorithm (finds shortest path between nodes)
 function dijkstra(graph, startNode, endNode) {
@@ -156,132 +162,134 @@ const NetworkGraph = ({
     })
 
     // Initiates when Start node is dropped on Chosen Node
-  .on("end", (event, d) => {
-    d.x = d.initialX;
-    d.y = d.initialY;
-    nodeElements.attr(
-      "transform",
-      (d) => `translate(${scaledX(d)}, ${scaledY(d)})`
-    );
-    // Stores Chosen Node
-    chosenNode = draggedNode.potentialTarget;
+    .on("end", (event, d) => {
+      d.x = d.initialX;
+      d.y = d.initialY;
+      nodeElements.attr(
+        "transform",
+        (d) => `translate(${scaledX(d)}, ${scaledY(d)})`
+      );
+      // Stores Chosen Node
+      chosenNode = draggedNode.potentialTarget;
 
-    if (chosenNode) {
-      console.log("Chosen Node:", chosenNode);
+      if (chosenNode) {
+        console.log("Chosen Node:", chosenNode);
 
-      // Start measuring calculation time
-      const startTime = performance.now();
+        // Start measuring calculation time
+        const startTime = performance.now();
 
-      // Calculate the shortest path distance using Dijkstra's algorithm
-      const graph = {};
-      graphData.links.forEach((link) => {
-        if (!graph[link.source]) {
-          graph[link.source] = [];
-        }
-        if (!graph[link.target]) {
-          graph[link.target] = [];
-        }
-        graph[link.source].push({ target: link.target, weight: link.weight });
-        graph[link.target].push({ target: link.source, weight: link.weight });
-      });
-
-      const shortestPath = dijkstra(graph, draggedNode.name, chosenNode.name);
-
-      // End measuring calculation time
-      const endTime = performance.now();
-      const timeTaken = endTime - startTime;
-
-      // Store the calculation time in state
-      setCalculationTime(timeTaken);
-
-      // Used to pass props into external components
-      setShortestPathDistance(shortestPath.distance);
-
-      console.log("Shortest Path Distance:", shortestPath.distance);
-      console.log("Shortest Path:", shortestPath.path);
-
-      // Finds the shortest path links
-      const shortestPathLinks = shortestPath.path
-        .map((node, index) => {
-          if (index < shortestPath.path.length - 1) {
-            return graphData.links.find((link) => {
-              return (
-                (link.source === node &&
-                  link.target === shortestPath.path[index + 1]) ||
-                (link.source === shortestPath.path[index + 1] &&
-                  link.target === node)
-              );
-            });
+        // Calculate the shortest path distance using Dijkstra's algorithm
+        const graph = {};
+        graphData.links.forEach((link) => {
+          if (!graph[link.source]) {
+            graph[link.source] = [];
           }
-          return null;
-        })
-        .filter((link) => link !== null);
-
-      // Sets Chosen Nodes name after drag handling ends
-      setChosenNodeName(chosenNode.name);
-
-      // Change the color of the shortest path links to green
-      linkElements.style("stroke", (link) => {
-        const linkSource = graphData.nodes.find(
-          (node) => node.name === link.source
-        );
-        const linkTarget = graphData.nodes.find(
-          (node) => node.name === link.target
-        );
-        const linkReverse = graphData.links.find(
-          (reverseLink) =>
-            reverseLink.source === link.target &&
-            reverseLink.target === link.source
-        );
-
-        if (shortestPathLinks.includes(link)) {
-          return styles.link.shortestPathColor;
-        } else if (
-          (linkSource === draggedNode && linkTarget === chosenNode) ||
-          (linkSource === chosenNode && linkTarget === draggedNode) ||
-          link === linkReverse
-        ) {
-          return styles.link.draggingLinkColor;
-        } else {
-          return styles.link.stroke;
-        }
-      });
-      setShortestPathArray(shortestPath.path);
-
-      // Additional code to handle sending data to the server
-      const requestData = {
-        startNode: draggedNode.name,
-        chosenNode: chosenNode.name,
-        weight: shortestPath.distance,
-        checkpoints: shortestPathArray,  // Added this line
-        calculationTime: calculationTime  // Added this line
-      };
-      
-      fetch("http://localhost:3001", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestData),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log("Data updated successfully:", data);
-        })
-        .catch((error) => {
-          console.error("Error updating data:", error);
+          if (!graph[link.target]) {
+            graph[link.target] = [];
+          }
+          graph[link.source].push({ target: link.target, weight: link.weight });
+          graph[link.target].push({ target: link.source, weight: link.weight });
         });
-    } else {
-      console.log("No chosen node.");
-    }
 
-    // Reverts Start node to original position
-    draggedNode.potentialTarget = null;
-  });
+        const shortestPath = dijkstra(graph, draggedNode.name, chosenNode.name);
 
-    // Listen for changes in calculationTime and log the value
+        // End measuring calculation time
+        const endTime = performance.now();
+        const timeTaken = endTime - startTime;
+
+        // Used to pass props into external components
+        setShortestPathDistance(shortestPath.distance);
+
+        console.log("Shortest Path Distance:", shortestPath.distance);
+        console.log("Shortest Path:", shortestPath.path);
+
+        // Finds the shortest path links
+        const shortestPathLinks = shortestPath.path
+          .map((node, index) => {
+            if (index < shortestPath.path.length - 1) {
+              return graphData.links.find((link) => {
+                return (
+                  (link.source === node &&
+                    link.target === shortestPath.path[index + 1]) ||
+                  (link.source === shortestPath.path[index + 1] &&
+                    link.target === node)
+                );
+              });
+            }
+            return null;
+          })
+          .filter((link) => link !== null);
+
+        // Sets Chosen Nodes name after drag handling ends
+        setChosenNodeName(chosenNode.name);
+
+        // Change the color of the shortest path links to green
+        linkElements.style("stroke", (link) => {
+          const linkSource = graphData.nodes.find(
+            (node) => node.name === link.source
+          );
+          const linkTarget = graphData.nodes.find(
+            (node) => node.name === link.target
+          );
+          const linkReverse = graphData.links.find(
+            (reverseLink) =>
+              reverseLink.source === link.target &&
+              reverseLink.target === link.source
+          );
+
+          if (shortestPathLinks.includes(link)) {
+            return styles.link.shortestPathColor;
+          } else if (
+            (linkSource === draggedNode && linkTarget === chosenNode) ||
+            (linkSource === chosenNode && linkTarget === draggedNode) ||
+            link === linkReverse
+          ) {
+            return styles.link.draggingLinkColor;
+          } else {
+            return styles.link.stroke;
+          }
+        });
+
+        // Store the calculation time in state
+        setCalculationTime(timeTaken);
+        setShortestPathArray(shortestPath.path);
+
+        // Additional code to handle sending data to the server
+        const requestData = {
+          startNode: draggedNode.name,
+          chosenNode: chosenNode.name,
+          weight: shortestPath.distance,
+          checkpoints: shortestPathArray,
+          calculationTime: timeTaken, // Use the updated timeTaken here
+        };
+
+        fetch("http://localhost:3001", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestData),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Data updated successfully:", data);
+          })
+          .catch((error) => {
+            console.error("Error updating data:", error);
+          });
+      } else {
+        console.log("No chosen node.");
+      }
+
+      // Reverts Start node to original position
+      draggedNode.potentialTarget = null;
+    });
+
+  // Listen for changes in calculationTime and log the value
   useEffect(() => {
-    console.log("Calculation Time:", calculationTime);
+    if (calculationTime !== null) {
+      console.log("Calculation Time:", calculationTime);
+    }
   }, [calculationTime]);
 
   // Display Rendering
@@ -358,7 +366,7 @@ const NetworkGraph = ({
 
       // Render Graph Nodes
       nodeElements = svg
-        .selectAll("g") 
+        .selectAll("g")
         .data(graphData.nodes)
         .enter()
         .append("g")
@@ -384,7 +392,7 @@ const NetworkGraph = ({
         .text((d) => d.name)
         .attr("text-anchor", "middle")
         .attr("dy", ".35em")
-        .attr("dx", 1) 
+        .attr("dx", 1)
         .style("fill", "black")
         .style("font-size", styles.node.labelFontSize)
         .classed("node-label", true);
@@ -399,12 +407,14 @@ const NetworkGraph = ({
         ref={svgRef}
       />
       <div>
-      <Checkpoints shortestPathArray={shortestPathArray} />
-      <div className="ml-[-75px] mt-3 rounded-full border-2 bg-[#B8B8B8] text-center text-[12px] px-4">Calc Time: {" "}
-        {calculationTime === null
-          ? "00.00ms"
-          : `${calculationTime.toFixed(2)} ms`}</div>
-          </div>
+        <Checkpoints shortestPathArray={shortestPathArray} />
+        <div className="ml-[-75px] mt-3 rounded-full border-2 bg-[#B8B8B8] text-center text-[12px] px-4">
+          Calc Time:{" "}
+          {calculationTime === null
+            ? "00.00ms"
+            : `${calculationTime.toFixed(2)} ms`}
+        </div>
+      </div>
     </GraphContainer>
   );
 };

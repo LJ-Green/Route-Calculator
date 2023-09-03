@@ -1,15 +1,15 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const cors = require('cors'); // Import the cors package
+const cors = require('cors'); 
 const { Pool } = require('pg');
 
 const app = express();
-const port = process.env.PORT || 3001; // Choose a different port from your React app
+const port = process.env.PORT || 3001; 
 
-// Use the cors middleware
+// cors middleware
 app.use(cors());
 
-// Create a PostgreSQL connection pool
+// PostgreSQL connection pool
 const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
@@ -22,12 +22,12 @@ const pool = new Pool({
 app.use(bodyParser.json());
 
 app.post('/', async (req, res) => { 
-  let client; // Declare a variable to hold the client
+  let client; 
 
   try {
     const { startNode, chosenNode, weight, shortestPathArray, calculationTime } = req.body;
 
-    // Acquire a client from the connection pool
+    // Client from the connection pool
     client = await pool.connect();
 
     // Update PostgreSQL table
@@ -42,12 +42,12 @@ app.post('/', async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   } finally {
     if (client) {
-      client.release(); // Release the client back to the pool
+      client.release(); // Releasing the client back to the pool
     }
   }
 });
 
-// Start the server
+// Render server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

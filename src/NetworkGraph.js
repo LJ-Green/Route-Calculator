@@ -67,7 +67,6 @@ const NetworkGraph = ({
   setShortestPathDistance,
   setStartNodeName,
   setChosenNodeName,
-  checkpointsData,
 }) => {
   // Vairiables
   const graphWidth = 800;
@@ -75,6 +74,7 @@ const NetworkGraph = ({
   const svgRef = useRef(null);
   const [shortestPathArray, setShortestPathArray] = useState([]);
   const [calculationTime, setCalculationTime] = useState(null);
+  const [dragHandlingComplete, setDragHandlingComplete] = useState(false);
 
   let scaledX,
     scaledY,
@@ -105,7 +105,7 @@ const NetworkGraph = ({
     },
   };
 
-  // Green hover when Start Node is in proximity of Chosen Node
+  // Turning Nodes green when overlpping
   const isOverlapping = (node1, node2) => {
     if (node1 === node2) {
       return false;
@@ -148,7 +148,7 @@ const NetworkGraph = ({
         "transform",
         (node) => `translate(${scaledX(node)}, ${scaledY(node)})`
       );
-      // Chosen node identifying and styling
+      // Identify Chosen Node and turn grey
       nodeElements.select("circle").style("fill", (node) => {
         if (node === d) {
           return styles.link.dragColor;
@@ -169,8 +169,10 @@ const NetworkGraph = ({
         "transform",
         (d) => `translate(${scaledX(d)}, ${scaledY(d)})`
       );
-      // Stores Chosen Node
       chosenNode = draggedNode.potentialTarget;
+
+      // Set the flag to true when drag handling is complete
+  setDragHandlingComplete(true);
 
       if (chosenNode) {
         console.log("Chosen Node:", chosenNode);
@@ -178,7 +180,7 @@ const NetworkGraph = ({
         // Start measuring calculation time
         const startTime = performance.now();
 
-        // Calculate the shortest path distance using Dijkstra's algorithm
+        // Uses Algorithm to find shortest route between two nodes
         const graph = {};
         graphData.links.forEach((link) => {
           if (!graph[link.source]) {
@@ -190,8 +192,7 @@ const NetworkGraph = ({
           graph[link.source].push({ target: link.target, weight: link.weight });
           graph[link.target].push({ target: link.source, weight: link.weight });
         });
-
-        const shortestPath = dijkstra(graph, draggedNode.name, chosenNode.name);
+          const shortestPath = dijkstra(graph, draggedNode.name, chosenNode.name);
 
         // End measuring calculation time
         const endTime = performance.now();
@@ -285,12 +286,12 @@ const NetworkGraph = ({
       draggedNode.potentialTarget = null;
     });
 
-  // Listen for changes in calculationTime and log the value
-  useEffect(() => {
-    if (calculationTime !== null) {
-      console.log("Calculation Time:", calculationTime);
-    }
-  }, [calculationTime]);
+ // Listen for changes in calculationTime and log the value when drag handling is complete
+useEffect(() => {
+  if (calculationTime !== null && dragHandlingComplete) {
+    console.log("Calculation Time:", calculationTime);
+  }
+}, [calculationTime, dragHandlingComplete]);
 
   // Display Rendering
   useEffect(() => {

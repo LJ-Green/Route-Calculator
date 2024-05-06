@@ -21,7 +21,7 @@ const App = () => {
 
   return (
     <div className="app-container">
-      {/* Pass the shortestPathArray, startNodeName, and chosenNodeName to the NetworkGraph component */}
+      {/* Passing the shortestPathArray, startNodeName, and chosenNodeName to the NetworkGraph component */}
       <NetworkGraph
         xmlData={xmlData}
         setShortestPathDistance={setShortestPathDistance}
@@ -31,7 +31,7 @@ const App = () => {
         setCalculationTime={setCalculationTime}
       />
       <Display />
-      {/* Pass the shortestPathDistance, startNodeName, and chosenNodeName to the Sidebar component */}
+      {/* Passing the shortestPathDistance, startNodeName, and chosenNodeName to the Sidebar component */}
       <Sidebar
         shortestPathDistance={shortestPathDistance}
         startNodeName={startNodeName}

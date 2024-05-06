@@ -14,7 +14,6 @@ const Sidebar = ({
   return (
     <div className="sidebar w-[300px] bg-[#E0E0E0] fixed top-0 right-0 h-full z-[1000]">
       {/* User Login */}
-      <img className="mx-auto my-6 w-[250px]" src={Logo} />
       <div id="user-container" className="border-b border-black">
         <div className="flex justify-around my-3">
           <Driver />
@@ -48,7 +47,7 @@ const Sidebar = ({
       </div>
       {/* Journey Weight */}
       <h3 className="text-center text-[26px] my-3 tracking-widest">WEIGHT</h3>
-      <p className="text-center mt-8 text-[180px]">{shortestPathDistance}</p>
+      <p className="text-center mt-20 text-[180px]">{shortestPathDistance}</p>
     </div>
   );
 };

@@ -7,9 +7,9 @@ import Checkpoints from "./components/Checkpoints";
 import "./App.css";
 
 // Implementing Dijktras Algorithm to find the shortest path between two nodes
-// Vairiables/ Initial styling for nodes & links
+// Vairiables
 // Drag handling (Start, On, End)
-// Displaying the graph using X & Y
+// Displaying the graph using X & Y/ Styling for nodes and Links
 // Graph rendering
 
 // Dijkstra's algorithm (finds shortest path between nodes)
@@ -172,7 +172,7 @@ const NetworkGraph = ({
       chosenNode = draggedNode.potentialTarget;
 
       // Set the flag to true when drag handling is complete
-  setDragHandlingComplete(true);
+      setDragHandlingComplete(true);
 
       if (chosenNode) {
         console.log("Chosen Node:", chosenNode);
@@ -192,7 +192,7 @@ const NetworkGraph = ({
           graph[link.source].push({ target: link.target, weight: link.weight });
           graph[link.target].push({ target: link.source, weight: link.weight });
         });
-          const shortestPath = dijkstra(graph, draggedNode.name, chosenNode.name);
+        const shortestPath = dijkstra(graph, draggedNode.name, chosenNode.name);
 
         // End measuring calculation time
         const endTime = performance.now();
@@ -260,8 +260,7 @@ const NetworkGraph = ({
           startNode: draggedNode.name,
           chosenNode: chosenNode.name,
           weight: shortestPath.distance,
-          checkpoints: shortestPathArray,
-          calculationTime: timeTaken, // Use the updated timeTaken here
+          calculationTime: timeTaken,
         };
 
         fetch("http://localhost:3001", {
@@ -286,12 +285,12 @@ const NetworkGraph = ({
       draggedNode.potentialTarget = null;
     });
 
- // Listen for changes in calculationTime and log the value when drag handling is complete
-useEffect(() => {
-  if (calculationTime !== null && dragHandlingComplete) {
-    console.log("Calculation Time:", calculationTime);
-  }
-}, [calculationTime, dragHandlingComplete]);
+  // Listen for changes in calculationTime and log the value when drag handling is complete
+  useEffect(() => {
+    if (calculationTime !== null && dragHandlingComplete) {
+      console.log("Calculation Time:", calculationTime);
+    }
+  }, [calculationTime, dragHandlingComplete]);
 
   // Display Rendering
   useEffect(() => {

@@ -25,15 +25,15 @@ app.post('/', async (req, res) => {
   let client; 
 
   try {
-    const { startNode, chosenNode, weight, shortestPathArray, calculationTime } = req.body;
+    const { startNode, chosenNode, weight, calculationTime } = req.body;
 
     // Client from the connection pool
     client = await pool.connect();
 
     // Update PostgreSQL table
     await client.query(
-      'INSERT INTO route_data (start_node, chosen_node, weight, checkpoints, calculation_time) VALUES ($1, $2, $3, $4, $5)',
-      [startNode, chosenNode, weight, shortestPathArray, calculationTime]
+      'INSERT INTO route_data (start_node, chosen_node, weight, calculation_time) VALUES ($1, $2, $3, $4)',
+      [startNode, chosenNode, weight, calculationTime]
     );
 
     res.status(200).json({ message: 'Data updated successfully' });
